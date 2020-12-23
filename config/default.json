@@ -1,0 +1,6 @@
+{
+    "server":{
+        "port":3000,
+        "uriDB": "mongodb://localhost:27017/webApi"
+    }
+}
