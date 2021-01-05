@@ -2,7 +2,7 @@ const cateModel = require('../models/cateModels');
 
 module.exports = {
     get :(req,res)=>{
-        cateModel.find((error,data) => {
+        cateModel.find({delete:0},(error,data) => {
             if(error){
                 return res.status(500).json(error);
             }
@@ -44,7 +44,7 @@ module.exports = {
                 if(err){
                     return res.status(200).json(err);
                 }
-                return res.statua(200).json(_data);
+                return res.status(200).json(_data);
             })
         })
     },
@@ -53,7 +53,10 @@ module.exports = {
         if(id == null){
             return res.status(500).send("Id is empty");
         }
-        cateModel.deleteOne({_id:id},(error,data)=>{
+        let data = {
+             delete : 1
+        }
+        cateModel.updateOne({_id:id},{$set:data},(error,data)=>{
             if(error){
                 return res.status(500),json(error);
             }
