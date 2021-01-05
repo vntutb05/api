@@ -8,6 +8,7 @@ module.exports = {
             return res.status(200).json(data);
         })
     },
+
     getAdd:(req,res) => { 
         return res.send("Get add users");
     },
@@ -23,10 +24,7 @@ module.exports = {
     getEdit:(req,res) => {
         let id = req.params.id;
         userModel.findById({_id:id},(error,data)=>{
-            if(error){
-                return res.status(500).json(error);
-            }
-            if(data == null){
+            if(data == null || error){
                 return res.status(500).send("Id không chính xác");
             }
             return res.status(200).json(data);
@@ -36,7 +34,10 @@ module.exports = {
         let id = req.params.id;
         let dataUpdate = req.body;
         userModel.find({_id:id},(error,data)=>{
-            if(data == null || error){
+            if(error){
+                return res.status(200).json(error);
+            }
+            if(data == null || data.length==0){
                 return res.send("Id không chính xác");
             }
             userModel.updateOne({_id:id},{$set:dataUpdate},(err,_data)=>{
@@ -51,7 +52,10 @@ module.exports = {
     delete:(req,res)=>{
         let id = req.params.id;
         userModel.find({_id:id},(error,data)=>{
-            if(data == null || error || data.length ==0){
+            if(error){
+                return res.status(200).json(error);
+            }
+            if(data == null || data.length ==0){
                 return res.send("Id không chính xác");
             }
             userModel.deleteOne({_id:id},(err,_data)=>{
@@ -62,6 +66,5 @@ module.exports = {
             })
         });
         
-    }
-    
+    }   
 }
